@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html  lang="es">
+<head>
+<meta name="description">
+<meta name="viewport"> 
+    <title>Horario de Salas</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 8px;
+            text-align: center;
+        }
+    </style>
+<style>
+body {
+    font-family: Arial;
+    background: #f4f6f8;
+    padding: 20px;
+}
+
+h2 {
+    color: #333;
+}
+
+select, button {
+    padding: 8px;
+    margin: 5px;
+}
+
+button {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #45a049;
+}
+
+table {
+    width: 100%;
+    background: white;
+    margin-top: 20px;
+}
+
+th {
+    background: #007BFF;
+    color: white;
+}
+
+td, th {
+    padding: 10px;
+}
+</style>
+</head>
+<body>
+<h1></h1>
+<h2>Asignar Sala</h2>
+
+<select id="dia">
+  <option>Lunes</option>
+  <option>Martes</option>
+  <option>Miércoles</option>
+  <option>Jueves</option>
+  <option>Viernes</option>
+</select>
+
+<select id="hora">
+  <option>08:00</option>
+  <option>09:00</option>
+  <option>10:00</option>
+  <option>11:00</option>
+</select>
+
+<select id="sala">
+  <option>Sala 1</option>
+  <option>Sala 2</option>
+</select>
+
+<select id="curso">
+  <option>Curso 1</option>
+  <option>Curso 2</option>
+  <option>Curso 3</option>
+  <option>Curso 4</option>
+  <option>Curso 5</option>
+  <option>Curso 6</option>
+  <option>Curso 7</option>
+  <option>Curso 8</option>
+</select>
+
+<button onclick="agregar()">Asignar</button>
+
+<h2>Horario</h2>
+
+<table id="tabla">
+    <tr>
+        <th>Día</th>
+        <th>Hora</th>
+        <th>Sala</th>
+        <th>Curso</th>
+    </tr>
+</table>
+
+<script>
+let horarios = [];
+
+function agregar() {
+    let dia = document.getElementById("dia").value;
+    let hora = document.getElementById("hora").value;
+    let sala = document.getElementById("sala").value;
+    let curso = document.getElementById("curso").value;
+
+    // Validar si ya está ocupado
+    let ocupado = horarios.find(h => 
+        h.dia === dia && h.hora === hora && h.sala === sala
+    );
+
+    if (ocupado) {
+        alert("⚠️ Sala ocupada en ese horario");
+        return;
+    }
+
+    horarios.push({ dia, hora, sala, curso });
+    mostrar();
+}
+
+function mostrar() {
+    let tabla = document.getElementById("tabla");
+
+    // Limpiar tabla (menos encabezado)
+    tabla.innerHTML = `
+        <tr>
+            <th>Día</th>
+            <th>Hora</th>
+            <th>Sala</th>
+            <th>Curso</th>
+        </tr>
+    `;
+
+    horarios.forEach(h => {
+        let fila = `<tr>
+            <td>${h.dia}</td>
+            <td>${h.hora}</td>
+            <td>${h.sala}</td>
+            <td>${h.curso}</td>
+        </tr>`;
+        tabla.innerHTML += fila;
+    });
+}
+<script>
+let horarios = JSON.parse(localStorage.getItem("horarios")) || [];
+
+function agregar() {
+    let dia = document.getElementById("dia").value;
+    let hora = document.getElementById("hora").value;
+    let sala = document.getElementById("sala").value;
+    let curso = document.getElementById("curso").value;
+
+    let ocupado = horarios.find(h => 
+        h.dia === dia && h.hora === hora && h.sala === sala
+    );
+
+    if (ocupado) {
+        alert("⚠️ Sala ocupada en ese horario");
+        return;
+    }
+
+    horarios.push({ dia, hora, sala, curso });
+
+    // GUARDAR
+    localStorage.setItem("horarios", JSON.stringify(horarios));
+
+    mostrar();
+}
+
+function mostrar() {
+    let tabla = document.getElementById("tabla");
+
+    tabla.innerHTML = `
+        <tr>
+            <th>Día</th>
+            <th>Hora</th>
+            <th>Sala</th>
+            <th>Curso</th>
+            <th>Acción</th>
+        </tr>
+    `;
+
+    horarios.forEach((h, index) => {
+        let fila = `<tr>
+            <td>${h.dia}</td>
+            <td>${h.hora}</td>
+            <td>${h.sala}</td>
+            <td>${h.curso}</td>
+            <td><button onclick="eliminar(${index})">❌</button></td>
+        </tr>`;
+        tabla.innerHTML += fila;
+    });
+}
+
+function eliminar(index) {
+    horarios.splice(index, 1);
+    localStorage.setItem("horarios", JSON.stringify(horarios));
+    mostrar();
+}
+
+// Cargar al abrir
+mostrar();
+</script>
+
+<script>
+let horarios = JSON.parse(localStorage.getItem("horarios")) || [];
+
+function agregar() {
+    let dia = document.getElementById("dia").value;
+    let hora = document.getElementById("hora").value;
+    let sala = document.getElementById("sala").value;
+    let curso = document.getElementById("curso").value;
+
+    let ocupado = horarios.find(h => 
+        h.dia === dia && h.hora === hora && h.sala === sala
+    );
+
+    if (ocupado) {
+        alert("⚠️ Sala ocupada en ese horario");
+        return;
+    }
+
+    horarios.push({ dia, hora, sala, curso });
+
+    // GUARDAR
+    localStorage.setItem("horarios", JSON.stringify(horarios));
+
+    mostrar();
+}
+
+function mostrar() {
+    let tabla = document.getElementById("tabla");
+
+    tabla.innerHTML = `
+        <tr>
+            <th>Día</th>
+            <th>Hora</th>
+            <th>Sala</th>
+            <th>Curso</th>
+            <th>Acción</th>
+        </tr>
+    `;
+
+    horarios.forEach((h, index) => {
+        let fila = `<tr>
+            <td>${h.dia}</td>
+            <td>${h.hora}</td>
+            <td>${h.sala}</td>
+            <td>${h.curso}</td>
+            <td><button onclick="eliminar(${index})">❌</button></td>
+        </tr>`;
+        tabla.innerHTML += fila;
+    });
+}
+
+function eliminar(index) {
+    horarios.splice(index, 1);
+    localStorage.setItem("horarios", JSON.stringify(horarios));
+    mostrar();
+}
+
+// Cargar al abrir
+mostrar();
+</script>
+
+
+</body>
+</html>
